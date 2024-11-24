@@ -1,0 +1,82 @@
+// Index.html :
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Parent Child Component</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <h1>Parent Child Component</h1>
+  <div id="parent-component"></div>
+
+  <script src="(link unavailable)"></script>
+  <script src="(link unavailable)"></script>
+  <script src="ParentComponent.js"></script>
+</body>
+</html>
+
+
+// ParentComponent.js :
+
+jsx
+import React, { useState, useMemo } from 'react';
+import ReactDOM from 'react-dom';
+import ChildComponent from './ChildComponent';
+
+const ParentComponent = () => {
+  const [count, setCount] = useState(0);
+  const [todoList, setTodoList] = useState([
+    { id: 1, title: 'Todo 1' },
+    { id: 2, title: 'Todo 2' },
+    { id: 3, title: 'Todo 3' },
+  ]);
+
+  const memoizedTodoList = useMemo(() => todoList, [todoList]);
+
+  const handleIncrement = () => {
+    setCount(count + 1);
+  };
+
+  const handleAddTodo = () => {
+    const newTodo = { id: todoList.length + 1, title: `Todo ${todoList.length + 1}` };
+    setTodoList([...todoList, newTodo]);
+  };
+
+  return (
+    <div>
+      <h1>Parent Component</h1>
+      <p>Count: {count}</p>
+      <button onClick={handleIncrement}>Increment</button>
+      <ChildComponent todoList={memoizedTodoList} />
+      <button onClick={handleAddTodo}>Add Todo</button>
+    </div>
+  );
+};
+
+ReactDOM.render(<ParentComponent />, document.getElementById('parent-component'));
+
+
+// ChildComponent.js :
+
+jsx
+import React from 'react';
+
+const ChildComponent = ({ todoList }) => {
+  console.log('Child component re-rendered');
+
+  return (
+    <div>
+      <h2>Todo List</h2>
+      <ul>
+        {todoList.map((todo) => (
+          <li key={(link unavailable)}>{todo.title}</li>
+        ))}
+      </ul>
+    </div>
+  );
+};
+
+export default ChildComponent;
